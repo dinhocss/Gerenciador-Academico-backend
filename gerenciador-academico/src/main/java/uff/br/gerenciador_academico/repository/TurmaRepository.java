@@ -32,7 +32,7 @@ public interface TurmaRepository extends JpaRepository<Turma,Long> {
     List<Turma> findByDisciplinaId(@Param("disciplinaId") Long disciplinaId);
 
     boolean existsByDisciplinaId(Long disciplinaId);
-
+    boolean existsByProfessorId(Long professorId);
     @Query(
             value = "select t from Turma t " +
                     "left outer join fetch t.disciplina d " +
