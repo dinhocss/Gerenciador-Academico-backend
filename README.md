@@ -13,5 +13,7 @@ Gerenciador Acadêmico - Sistema para gestão de alunos e turmas da UFF.
 * [] Listagem de Turmas
  
 * [] Login e Segurança
+
+* [x] Testes
  
 * [x] Configuração do Projeto
