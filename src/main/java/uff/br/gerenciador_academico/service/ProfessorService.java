@@ -23,6 +23,10 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
+    public Professor recuperarProfessorPorId(Long id){
+        return professorRepository.findById(id).orElseThrow(()-> new EntidadeNaoEncontradaException("Professor de id = " + id + " não encontrado."));
+    }
+
     public Professor inserirProfessor(Professor professor){
         return professorRepository.save(professor);
     }
@@ -35,5 +39,15 @@ public class ProfessorService {
         professorAtualiza.setEmail(professor.getEmail());
 
         return professorRepository.save(professorAtualiza);
+    }
+
+    public void removerProfessorPorId(Long id){
+        if(turmaRepository.existsByProfessorId(id)){
+            throw new RegraDeNegocioException("Não é possível remover um professor que possui turmas vinculadas a ele");
+        }
+
+        Professor professor = professorRepository.findById(id).orElseThrow(()-> new EntidadeNaoEncontradaException("Professor de id = " + id + " não encontrado."));
+
+        professorRepository.delete(professor);
     }
 }

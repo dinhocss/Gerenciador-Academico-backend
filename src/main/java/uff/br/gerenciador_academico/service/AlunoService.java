@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -21,9 +22,14 @@ public class AlunoService {
         return alunoRepository.findAll();
     }
 
+    public Optional<Aluno> recuperarAlunoPorId(Long id){
+        return alunoRepository.findById(id);
+    }
+
     public Aluno inserirAluno(Aluno aluno){
         return alunoRepository.save(aluno);
     }
+
 
     @Transactional
     public Aluno alterarAluno(Long id, Aluno alunoNovo){

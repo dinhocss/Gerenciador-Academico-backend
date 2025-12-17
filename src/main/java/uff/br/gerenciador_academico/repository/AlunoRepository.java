@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
-    List<Aluno> findByName(String nome);
+    List<Aluno> findByNome(String nome);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select a from Aluno a where a.id = :id")
