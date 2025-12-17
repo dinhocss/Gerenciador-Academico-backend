@@ -3,8 +3,10 @@ package uff.br.gerenciador_academico.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uff.br.gerenciador_academico.model.dto.TurmaDTO;
 import uff.br.gerenciador_academico.model.Turma;
 import uff.br.gerenciador_academico.service.TurmaService;
 
@@ -17,15 +19,20 @@ public class TurmaController {
     private final TurmaService turmaService;
 
     @GetMapping
-    public ResponseEntity<List<Turma>> recuperarTodas(){
-        return ResponseEntity.ok(turmaService.recuperarTurmas());
+    public ResponseEntity<List<TurmaDTO>> recuperarTodas(){
+        List<Turma> turmas = turmaService.recuperarTurmas();
+
+        List<TurmaDTO> turmasDTO = turmas.stream()
+                .map(TurmaDTO::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(turmasDTO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Turma> recuperarPorId(@PathVariable Long id){
-        return turmaService.recuperarTurmas().stream()
-                .filter(t -> t.getId().equals(id))
-                .findFirst()
+    public ResponseEntity<TurmaDTO> recuperarPorId(@PathVariable Long id){
+        return turmaService.recuperarTurmaPorId(id)
+                .map(TurmaDTO::fromEntity)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

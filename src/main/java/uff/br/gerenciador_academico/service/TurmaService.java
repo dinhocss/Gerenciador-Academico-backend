@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.List;
 import java.util.HashSet;
 
@@ -28,6 +29,10 @@ public class TurmaService {
 
     public List<Turma> recuperarTurmas(){
         return turmaRepository.findAll();
+    }
+
+    public Optional<Turma> recuperarTurmaPorId(Long id){
+        return turmaRepository.findById(id);
     }
 
     public Turma inserirTurma(Turma turma){
