@@ -2,7 +2,7 @@
 
 Gerenciador Acadêmico - Sistema para gestão de alunos e turmas da UFF.
 
-##Tecnologias Utilizadas
+## Tecnologias Utilizadas
 * **Java 21**
 * **Spring Boot 3** (Web, Data JPA, Validation)
 * **Banco de Dados:** H2
