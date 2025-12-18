@@ -1,11 +1,18 @@
 package uff.br.gerenciador_academico.model.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import uff.br.gerenciador_academico.model.Aluno;
 
 public record AlunoDTO (
         Long id,
+
+        @NotEmpty(message="O 'Nome' deve ser informado.")
         String nome,
+
+        @NotEmpty(message="A 'Matrícula' deve ser informada.")
         String matricula,
+
+        @NotEmpty(message="O 'CPF' deve ser informado.")
         String cpf
 ) {
     public static AlunoDTO fromEntity(Aluno aluno){
