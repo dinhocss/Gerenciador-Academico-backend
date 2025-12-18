@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,8 +24,8 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
-    public Professor recuperarProfessorPorId(Long id){
-        return professorRepository.findById(id).orElseThrow(()-> new EntidadeNaoEncontradaException("Professor de id = " + id + " não encontrado."));
+    public Optional<Professor> recuperarProfessorPorId(Long id){
+        return professorRepository.findById(id);
     }
 
     public Professor inserirProfessor(Professor professor){
@@ -49,5 +50,9 @@ public class ProfessorService {
         Professor professor = professorRepository.findById(id).orElseThrow(()-> new EntidadeNaoEncontradaException("Professor de id = " + id + " não encontrado."));
 
         professorRepository.delete(professor);
+    }
+
+    public Page<Professor> recuperarProfessoresComPaginacao(Pageable pageable, String nome){
+        return professorRepository.findAllWithPageable(pageable, "%" + nome + "%");
     }
 }

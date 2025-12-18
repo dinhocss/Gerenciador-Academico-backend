@@ -1,5 +1,6 @@
 package uff.br.gerenciador_academico.controller;
 
+import org.springframework.http.HttpStatus;
 import uff.br.gerenciador_academico.exception.EntidadeNaoEncontradaException;
 import uff.br.gerenciador_academico.model.Aluno;
 import uff.br.gerenciador_academico.model.dto.AlunoDTO;
@@ -40,5 +41,33 @@ public class AlunoController {
                 .map(AlunoDTO::fromEntity)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntidadeNaoEncontradaException("Aluno não encontrado com id: " + id));
+    }
+
+    @PostMapping
+    public ResponseEntity<AlunoDTO> cadastrarAluno(@RequestBody @Valid AlunoDTO aluno){
+        Aluno alunoSalvar = aluno.toEntity();
+        Aluno alunoSalvo = alunoService.inserirAluno(alunoSalvar);
+        return ResponseEntity.status(HttpStatus.CREATED).body(AlunoDTO.fromEntity(alunoSalvo));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AlunoDTO> alterarAluno(@PathVariable Long id, @RequestBody AlunoDTO aluno){
+        Aluno alunoNovosDados = aluno.toEntity();
+        Aluno alunoAtualizado = alunoService.alterarAluno(id, alunoNovosDados);
+        return ResponseEntity.ok(AlunoDTO.fromEntity(alunoAtualizado));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removerAluno(@PathVariable Long id){
+        alunoService.removerAlunoPorId(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/pesquisar")
+    public ResponseEntity<Page<AlunoDTO>> pesquisarAluno(@RequestParam(value = "codigo", required = false, defaultValue="") String codigo, Pageable pageable){
+        Page<Aluno> paginaDeAlunos = alunoService.recuperarAlunosComPaginacao(pageable, codigo);
+        Page<AlunoDTO> paginaDeDtos = paginaDeAlunos.map(AlunoDTO::fromEntity);
+
+        return ResponseEntity.ok(paginaDeDtos);
     }
 }
